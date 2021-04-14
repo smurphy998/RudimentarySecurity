@@ -1,0 +1,47 @@
+from twilio.rest import Client
+import os
+from time import sleep
+from time import time
+
+account_sid = "AC5d5eb762be5abcbcf19ff15e982af80f"
+auth_token = "6b6b16a3a88da872cdffa71ce2400186"
+client = Client(account_sid,auth_token)
+
+phoneIP = "192.168.1.64"
+TimStatus = 0
+timeElapsed = 0
+startTime = time()
+currentTime = time()
+
+checkFreq = 10
+lonelyTime = 120
+
+def sendText():
+    print("execute sending of a text here")
+    message = client.api.account.messages.create(
+            to="+17733297941",
+            from_="+12015146471",
+            body="Welcome Home Master")
+
+while True:
+    isTimHome = os.system("ping -c 1 " + phoneIP)
+    
+    if isTimHome == 0:
+        print("Tim is Home!")
+        startTime = time()
+        if TimStatus == 0:
+            TimStatus = 1
+            print("We should send a text")
+            sendText()
+    else:
+        print("Tim is not home")
+        if timeElapsed > lonelyTime and TimStatus == 1:
+            print("Tim is really gone")
+            TimStatus = 0
+            startTime = time()
+    currentTime = time()
+    timeElapsed = currentTime - startTime
+    print(timeElapsed)
+    
+    sleep(checkFreq)
+    
