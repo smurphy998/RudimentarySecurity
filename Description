@@ -1,0 +1,1 @@
+The way the project works is that it uses a break beam sensor on the arduino and a camera on the raspberry pi. Once these are triggered then a livefeed on the internet will be created and the users phone will be notified
